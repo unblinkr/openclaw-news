@@ -1,8 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: 'export',
-  distDir: 'dist',
+  // Using SSR for API routes to work
 };
 
 export default nextConfig;

@@ -5,17 +5,34 @@ import { useState } from "react";
 export default function Newsletter() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("loading");
-    
-    // TODO: Connect to Beehiiv API
-    // For now, just simulate success
-    setTimeout(() => {
-      setStatus("success");
-      setEmail("");
-    }, 1000);
+    setMessage("");
+
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setStatus("success");
+        setEmail("");
+        setMessage("✓ Thanks! Check your email to confirm.");
+      } else {
+        setStatus("error");
+        setMessage(data.error || "Something went wrong. Try again.");
+      }
+    } catch (err) {
+      setStatus("error");
+      setMessage("Network error. Please try again.");
+    }
   };
 
   return (
@@ -30,7 +47,7 @@ export default function Newsletter() {
         
         {status === "success" ? (
           <div className="bg-green-100 text-green-800 px-6 py-4 rounded-lg">
-            ✓ Thanks! Check your email to confirm your subscription.
+            {message}
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
@@ -50,6 +67,10 @@ export default function Newsletter() {
               {status === "loading" ? "..." : "Subscribe"}
             </button>
           </form>
+        )}
+        
+        {status === "error" && (
+          <p className="text-red-600 text-sm mt-2">{message}</p>
         )}
       </div>
     </div>
