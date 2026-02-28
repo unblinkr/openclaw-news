@@ -42,7 +42,7 @@ export default function Home() {
           <p className="text-xs text-neutral-500 uppercase tracking-widest mb-2">Advertisement</p>
           <ins className="adsbygoogle"
             style={{ display: 'inline-block', width: '728px', height: '90px' }}
-            data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+            data-ad-client="ca-pub-3225858495320520"
             data-ad-slot="1234567890"></ins>
         </div>
 
@@ -105,7 +105,7 @@ export default function Home() {
               <p className="text-xs text-neutral-500 uppercase tracking-widest mb-2">Advertisement</p>
               <ins className="adsbygoogle"
                 style={{ display: 'inline-block', width: '300px', height: '250px' }}
-                data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                data-ad-client="ca-pub-3225858495320520"
                 data-ad-slot="0987654321"></ins>
             </div>
 
@@ -134,7 +134,7 @@ export default function Home() {
           <p className="text-xs text-neutral-500 uppercase tracking-widest mb-2">Advertisement</p>
           <ins className="adsbygoogle"
             style={{ display: 'inline-block', width: '728px', height: '90px' }}
-            data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+            data-ad-client="ca-pub-3225858495320520"
             data-ad-slot="1122334455"></ins>
         </div>
       </main>
