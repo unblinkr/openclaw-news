@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer PmSaATtDVRbXJY9DMW81I4fxgDSO4oTpLROnBmmnJewwcK04fe8dKIIFZIYBMSlf`,
+        'Authorization': `Bearer ${process.env.BEEHIIV_API_KEY}`,
       },
       body: JSON.stringify({
         email,

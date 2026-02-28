@@ -1,8 +1,9 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Source+Serif+Pro:wght@300;400;600&display=swap');
 
 @theme {
-  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-serif: 'Playfair Display', 'Source Serif Pro', Georgia, 'Times New Roman', serif;
+  --font-body: 'Source Serif Pro', Georgia, serif;
 }
 
 html {
@@ -10,30 +11,87 @@ html {
 }
 
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f4f1ea;
 }
 
-.prose {
-  max-width: 65ch;
-  line-height: 1.75;
+/* Newspaper Typography */
+.newspaper-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.prose p {
-  margin-bottom: 1.25em;
-}
-
-.prose h2 {
-  font-size: 1.5rem;
+.newspaper-headline {
+  font-family: 'Playfair Display', Georgia, serif;
   font-weight: 700;
-  margin-top: 2em;
-  margin-bottom: 0.75em;
+  line-height: 1.1;
 }
 
-.prose h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-top: 1.5em;
-  margin-bottom: 0.5em;
+.newspaper-body {
+  font-family: 'Source Serif Pro', Georgia, serif;
+  line-height: 1.8;
+}
+
+/* Classic newspaper borders */
+.newspaper-border {
+  border: 2px solid #1a1a1a;
+}
+
+.newspaper-border-t {
+  border-top: 1px solid #1a1a1a;
+}
+
+.newspaper-border-b {
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.newspaper-border-b-2 {
+  border-bottom: 2px solid #1a1a1a;
+}
+
+/* Double border like old newspapers */
+.newspaper-double-border {
+  border-top: 3px double #1a1a1a;
+  border-bottom: 3px double #1a1a1a;
+}
+
+/* Column layout for articles */
+.newspaper-columns {
+  column-count: 2;
+  column-gap: 2rem;
+  column-rule: 1px solid #d1d5db;
+}
+
+@media (max-width: 768px) {
+  .newspaper-columns {
+    column-count: 1;
+    column-rule: none;
+  }
+}
+
+/* Drop cap for featured articles */
+.drop-cap::first-letter {
+  float: left;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 4rem;
+  line-height: 0.8;
+  padding-right: 0.5rem;
+  padding-top: 0.2rem;
+  font-weight: 700;
+}
+
+/* Newspaper date/issue line */
+.newspaper-masthead {
+  border-bottom: 1px solid #1a1a1a;
+  padding-bottom: 0.5rem;
+}
+
+/* Ad container styling */
+.ad-container {
+  background: #ece9e0;
+  border: 1px solid #d1d5db;
+  text-align: center;
 }

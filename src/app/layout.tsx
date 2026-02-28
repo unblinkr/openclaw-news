@@ -14,7 +14,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-white text-slate-900 antialiased">
+      <head>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+          crossOrigin="anonymous"></script>
+      </head>
+      <body className="bg-[#f4f1ea] text-neutral-900 antialiased">
         {children}
       </body>
     </html>
