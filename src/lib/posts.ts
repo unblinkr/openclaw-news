@@ -6,7 +6,7 @@ export interface Post {
   date: string;
   tag: string;
   readTime: string;
-  image: string;
+  image?: string;
 }
 
 export const posts: Post[] = [
@@ -63,6 +63,7 @@ Whether you're a busy professional, a developer, or just curious about the futur
     date: "February 26, 2026",
     tag: "News",
     readTime: "4 min read",
+    image: "/images/perplexity-computer-vs-openclaw.svg",
     content: `
 # Perplexity's 'Computer' vs OpenClaw: What's the Difference?
 
