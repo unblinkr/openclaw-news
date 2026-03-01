@@ -6,6 +6,7 @@ export interface Post {
   date: string;
   tag: string;
   readTime: string;
+  image: string;
 }
 
 export const posts: Post[] = [
@@ -16,6 +17,7 @@ export const posts: Post[] = [
     date: "February 26, 2026",
     tag: "Explainer",
     readTime: "5 min read",
+    image: "/images/what-is-openclaw.svg",
     content: `
 # What is OpenClaw? The AI Agent Platform Explained
 
