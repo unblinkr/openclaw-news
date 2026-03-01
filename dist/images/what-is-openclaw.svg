@@ -1,0 +1,21 @@
+<svg width="800" height="450" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00c9ff"/>
+      <stop offset="100%" style="stop-color:#92fe9d"/>
+    </linearGradient>
+    <linearGradient id="chrome" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#e0e0e0"/>
+      <stop offset="50%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#909090"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg)"/>
+  <circle cx="400" cy="220" r="120" fill="url(#chrome)" stroke="#333" stroke-width="3"/>
+  <rect x="340" y="160" width="120" height="80" rx="10" fill="#1a1a2e"/>
+  <circle cx="380" cy="200" r="15" fill="#00ff00"/>
+  <circle cx="420" cy="200" r="15" fill="#00ff00"/>
+  <rect x="370" y="240" width="60" height="8" fill="#00ff00"/>
+  <text x="400" y="380" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="32" fill="#1a1a2e" font-weight="bold">AI AGENT</text>
+  <text x="400" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#444">Est. 2024 • v2.0</text>
+</svg>

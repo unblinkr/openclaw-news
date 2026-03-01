@@ -1,0 +1,19 @@
+<svg width="800" height="450" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="left" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1e3c72"/>
+      <stop offset="100%" style="stop-color:#2a5298"/>
+    </linearGradient>
+    <linearGradient id="right" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#134e5e"/>
+      <stop offset="100%" style="stop-color:#71b280"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="450" fill="url(#left)"/>
+  <rect x="400" width="400" height="450" fill="url(#right)"/>
+  <text x="200" y="200" text-anchor="middle" font-family="Impact, sans-serif" font-size="48" fill="#fff" stroke="#000" stroke-width="2">VS</text>
+  <text x="200" y="250" text-anchor="middle" font-family="Arial Black" font-size="24" fill="#ffcc00">2026 BATTLE</text>
+  <text x="200" y="280" text-anchor="middle" font-family="Courier New" font-size="14" fill="#fff">COMPUTER</text>
+  <text x="600" y="280" text-anchor="middle" font-family="Courier New" font-size="14" fill="#fff">OPENCLAW</text>
+  <rect x="50" y="300" width="70" height="50" fill="#a0a0a0"/>  <rect x="550" y="300" width="70" height="50" fill="#c0c0c0"/>
+</svg>

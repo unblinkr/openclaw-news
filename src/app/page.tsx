@@ -30,10 +30,10 @@ export default function Home() {
         <nav className="border-y border-neutral-900 py-3 mb-8">
           <ul className="flex justify-center gap-8 text-sm font-semibold uppercase tracking-wider">
             <li><a href="/" className="hover:text-neutral-600">Home</a></li>
-            <li><a href="#" className="hover:text-neutral-600">Agents</a></li>
-            <li><a href="#" className="hover:text-neutral-600">Tutorials</a></li>
-            <li><a href="#" className="hover:text-neutral-600">Reviews</a></li>
-            <li><a href="#" className="hover:text-neutral-600">About</a></li>
+            <li><a href="/agents" className="hover:text-neutral-600">Agents</a></li>
+            <li><a href="/tutorials" className="hover:text-neutral-600">Tutorials</a></li>
+            <li><a href="/reviews" className="hover:text-neutral-600">Reviews</a></li>
+            <li><a href="/about" className="hover:text-neutral-600">About</a></li>
           </ul>
         </nav>
 
