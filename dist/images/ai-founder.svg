@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect fill="#f4f1ea" width="400" height="300"/>
+  <circle cx="200" cy="120" r="50" fill="#3b82f6" opacity="0.2"/>
+  <circle cx="200" cy="120" r="35" fill="#3b82f6" opacity="0.4"/>
+  <circle cx="200" cy="120" r="20" fill="#3b82f6"/>
+  <rect x="175" y="170" width="50" height="80" fill="#1e293b" rx="5"/>
+  <text x="200" y="270" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e293b" text-anchor="middle">AI + Human</text>
+</svg>

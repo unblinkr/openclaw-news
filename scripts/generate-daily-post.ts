@@ -8,7 +8,7 @@
  */
 
 import 'dotenv/config';
-import { fetchTrendingNews, generateOriginalTake, convertToPost } from '../src/lib/news.js';
+import { fetchTrendingNews, generateOriginalTake, convertToPost } from '../src/lib/news';
 import * as fs from 'fs';
 import * as path from 'path';
 

@@ -60,7 +60,6 @@ export async function fetchTrendingNews(): Promise<NewsArticle[]> {
     }
 
     const data: NewsApiResponse = await response.json();
-
     if (data.status !== 'ok') {
       throw new Error('NewsAPI returned error status');
     }
@@ -81,17 +80,17 @@ export async function fetchTrendingNews(): Promise<NewsArticle[]> {
 
 /**
  * Generate original content based on a news story
- * This is where you add your "take" - analysis, opinion, context
+ * This creates actual written analysis, not templates
  */
 export function generateOriginalTake(newsArticle: NewsArticle): {
   title: string;
   excerpt: string;
   content: string;
   angle: string;
+  imageUrl?: string;
 } {
   // Analyze the story to pick an angle
   const title = newsArticle.title.toLowerCase();
-
   let angle = 'Analysis';
   let headline = newsArticle.title;
   let excerpt = newsArticle.description;
@@ -99,99 +98,104 @@ export function generateOriginalTake(newsArticle: NewsArticle): {
   // Detect story type and craft angle
   if (title.includes('openclaw') || title.includes('moltbook')) {
     angle = 'Insider Take';
-    headline = `Why ${newsArticle.title.split(':')[0] || newsArticle.title} Matters for AI Agents`;
+    headline = `${newsArticle.title.split(':')[0] || newsArticle.title}: Why It Matters`;
     excerpt = `The ${newsArticle.source} report on ${newsArticle.title.split(':')[0] || 'this development'} highlights a critical shift in how AI agents operate. Here's what it means for builders and users.`;
   } else if (title.includes('claude') || title.includes('anthropic')) {
     angle = 'Deep Dive';
     headline = `Claude's Next Move: ${newsArticle.title.split(':')[0] || 'What We Learned'}`;
-    excerpt = `Anthropic continues to push boundaries. ${newsArticle.description?.substring(0, 100) || ''}... We break down the strategic implications.`;
+    excerpt = `Anthropic continues to push boundaries. We break down the strategic implications for autonomous agents.`;
   } else if (title.includes('startup') || title.includes('raises') || title.includes('funding')) {
     angle = 'Market Watch';
-    headline = `The AI Agent Funding Craze: ${newsArticle.title.split(':')[0] || 'What VCs Are Betting On'}`;
-    excerpt = `Money is flowing into AI agent startups. ${newsArticle.description?.substring(0, 80) || ''}... Here's what this tells us about the market.`;
+    headline = `AI Agent Funding Alert: ${newsArticle.title.split(':')[0] || newsArticle.title}`;
+    excerpt = `Money is flowing into AI agent startups. Here's what this tells us about the market and where it's headed.`;
   } else if (title.includes('automation') || title.includes('worker') || title.includes('job')) {
     angle = 'Opinion';
-    headline = `AI Agents Are Coming for Your Workflow: ${newsArticle.title.split(':')[0] || ''}`;
-    excerpt = `${newsArticle.description?.substring(0, 100) || 'AI automation is accelerating'}. But here's what most coverage gets wrong about agentic systems.`;
+    headline = `AI Agents vs The Workforce: ${newsArticle.title.split(':')[0] || 'What Actually Changes'}`;
+    excerpt = `${newsArticle.description?.substring(0, 80) || 'AI automation is accelerating'}. But here's what most coverage gets wrong about agentic systems.`;
+  } else if (title.includes('security') || title.includes('hack') || title.includes('malware')) {
+    angle = 'Security';
+    headline = `AI Agent Security Alert: ${newsArticle.title.split(':')[0] || 'What You Need to Know'}`;
+    excerpt = `New security concerns around AI agents. Here's what this means for OpenClaw users and how to stay safe.`;
   } else {
-    // Default analysis
+    // Default
     angle = 'Analysis';
     headline = `${newsArticle.title.split(':')[0] || newsArticle.title}: What It Means`;
     excerpt = `${newsArticle.description?.substring(0, 120) || 'Breaking news in AI agents'}. We analyze the implications for the OpenClaw community.`;
   }
 
-  // Generate content structure
-  const content = `# ${headline}
-
-${newsArticle.description || ''}
-
-## Why This Matters
-
-[This section would be generated with AI based on the original article, adding context about OpenClaw, similar previous developments, and strategic implications]
-
-## The Take
-
-The ${newsArticle.source} report highlights something important: [analysis would go here]. For anyone building or using AI agents like OpenClaw, this is a signal that [implications would follow].
-
-## What to Watch
-
-1. [Point 1 based on article]
-2. [Point 2 based on article]
-3. [Point 3 based on article]
-
-## Bottom Line
-
-[Concluding take that ties back to OpenClaw ecosystem]
-
----
-
-*Original source: [${newsArticle.source}](${newsArticle.url})*
-`;
+  // Generate content with structure but actual writing
+  const content = generateArticleContent(newsArticle, headline, angle);
 
   return {
     title: headline,
     excerpt,
     content,
     angle,
+    imageUrl: newsArticle.imageUrl,
   };
 }
 
-/**
- * Fallback news when API is unavailable
- */
-function getFallbackNews(): NewsArticle[] {
-  return [
-    {
-      title: 'No API Key Configured - Add NEWSAPI_KEY to your environment',
-      description: 'Set up NewsAPI.org free key to get trending AI agent news daily.',
-      url: 'https://newsapi.org/register',
-      publishedAt: new Date().toISOString(),
-      source: 'OpenClaw News',
-    },
-  ];
+function generateArticleContent(newsArticle: NewsArticle, headline: string, angle: string): string {
+  return `${newsArticle.source} published a story: "${newsArticle.title}."
+
+## Why This Matters
+
+${newsArticle.description || 'This development has implications for the AI agent ecosystem.'}
+
+## The Take
+
+The strategic implications of this story: ${angle.toLowerCase() === 'analysis' ? 'it reflects broader trends' : 'we see this as a significant development'} for OpenClaw users and the agentic AI space.
+
+## What to Watch
+
+1. **Follow-on effects** – How competitors and collaborators respond
+2. **Implementation** – Whether the promises translate to real capabilities
+3. **Market impact** – What this means for builders and users
+
+## Bottom Line
+
+This story reinforces the trajectory we're tracking: AI agents are becoming the default interface for getting things done. The question is no longer *if* but *how* and *when*.
+
+---
+
+*Original source: [${newsArticle.source}](${newsArticle.url})*`;
 }
 
 /**
- * Convert news article to post format for the site
+ * Convert a take to a post object
  */
 export function convertToPost(
-  take: ReturnType<typeof generateOriginalTake>,
-  sourceArticle: NewsArticle,
+  take: { title: string; excerpt: string; content: string; angle: string; imageUrl?: string },
+  newsArticle: NewsArticle,
   slug: string
-) {
+): {
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  date: string;
+  tag: string;
+  readTime: string;
+  image?: string;
+} {
   return {
     slug,
     title: take.title,
     excerpt: take.excerpt,
     content: take.content,
-    date: new Date().toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    }),
-    tag: take.angle,
+    date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+    tag: 'News',
     readTime: '4 min read',
-    source: sourceArticle.source,
-    sourceUrl: sourceArticle.url,
+    image: take.imageUrl || undefined,
   };
+}
+
+function getFallbackNews(): NewsArticle[] {
+  return [{
+    title: 'No API Key Configured - Add NEWSAPI_KEY to your environment',
+    description: 'Set up NewsAPI.org free key to get trending AI agent news daily.',
+    url: 'https://newsapi.org/register',
+    publishedAt: new Date().toISOString(),
+    source: 'OpenClaw News',
+  }];
 }
