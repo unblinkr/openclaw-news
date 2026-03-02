@@ -11,6 +11,114 @@ export interface Post {
 
 export const posts: Post[] = [
   {
+    slug: "i-started-a-business-with-ai-and-no-tech-backgroun",
+    title: "I started a business with AI and no tech background. Here's what it still can't replace.: What It Means",
+    excerpt: "Tim Desoto built a shopping startup using AI, despite no tech background. He shares where AI helped him — and where huma. We analyze the implications ",
+    content: `
+# I started a business with AI and no tech background. Here's what it still can't replace.: What It Means
+
+Tim Desoto built a shopping startup using AI, despite no tech background. He shares where AI helped him — and where human perspective still matters.
+
+## Why This Matters
+
+[This section would be generated with AI based on the original article, adding context about OpenClaw, similar previous developments, and strategic implications]
+
+## The Take
+
+The Business Insider report highlights something important: [analysis would go here]. For anyone building or using AI agents like OpenClaw, this is a signal that [implications would follow].
+
+## What to Watch
+
+1. [Point 1 based on article]
+2. [Point 2 based on article]
+3. [Point 3 based on article]
+
+## Bottom Line
+
+[Concluding take that ties back to OpenClaw ecosystem]
+
+---
+
+*Original source: [Business Insider](https://www.businessinsider.com/startup-founder-shares-ai-use-limits-2026-2)*
+
+`,
+    date: "March 1, 2026",
+    tag: "News",
+    readTime: "4 min read",
+  },
+  {
+    slug: "no-api-key-configured---add-newsapikey-to-your-env",
+    title: "No API Key Configured - Add NEWSAPI_KEY to your environment: What It Means",
+    excerpt: "Set up NewsAPI.org free key to get trending AI agent news daily.. We analyze the implications for the OpenClaw community.",
+    content: `
+# No API Key Configured - Add NEWSAPI_KEY to your environment: What It Means
+
+Set up NewsAPI.org free key to get trending AI agent news daily.
+
+## Why This Matters
+
+[This section would be generated with AI based on the original article, adding context about OpenClaw, similar previous developments, and strategic implications]
+
+## The Take
+
+The OpenClaw News report highlights something important: [analysis would go here]. For anyone building or using AI agents like OpenClaw, this is a signal that [implications would follow].
+
+## What to Watch
+
+1. [Point 1 based on article]
+2. [Point 2 based on article]
+3. [Point 3 based on article]
+
+## Bottom Line
+
+[Concluding take that ties back to OpenClaw ecosystem]
+
+---
+
+*Original source: [OpenClaw News](https://newsapi.org/register)*
+
+`,
+    date: "March 1, 2026",
+    tag: "News",
+    readTime: "4 min read",
+  },
+  {
+    slug: "no-api-key-configured---add-newsapikey-to-your-env",
+    title: "No API Key Configured - Add NEWSAPI_KEY to your environment: What It Means",
+    excerpt: "Set up NewsAPI.org free key to get trending AI agent news daily.. We analyze the implications for the OpenClaw community.",
+    content: `
+# No API Key Configured - Add NEWSAPI_KEY to your environment: What It Means
+
+Set up NewsAPI.org free key to get trending AI agent news daily.
+
+## Why This Matters
+
+[This section would be generated with AI based on the original article, adding context about OpenClaw, similar previous developments, and strategic implications]
+
+## The Take
+
+The OpenClaw News report highlights something important: [analysis would go here]. For anyone building or using AI agents like OpenClaw, this is a signal that [implications would follow].
+
+## What to Watch
+
+1. [Point 1 based on article]
+2. [Point 2 based on article]
+3. [Point 3 based on article]
+
+## Bottom Line
+
+[Concluding take that ties back to OpenClaw ecosystem]
+
+---
+
+*Original source: [OpenClaw News](https://newsapi.org/register)*
+
+`,
+    date: "March 1, 2026",
+    tag: "News",
+    readTime: "4 min read",
+  },
+  {
     slug: "what-is-openclaw",
     title: "What is OpenClaw? The AI Agent Platform Explained",
     excerpt: "OpenClaw is revolutionizing how we interact with AI. Learn what it is, how it works, and why everyone is talking about it.",

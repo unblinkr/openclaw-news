@@ -4,11 +4,10 @@
  * Run this daily to pull trending news and create a new post
  *
  * Usage:
- *   ts-node scripts/generate-daily-post.ts
- *   # or with bun/node:
- *   npx ts-node scripts/generate-daily-post.ts
+ *   npx tsx scripts/generate-daily-post.ts
  */
 
+import 'dotenv/config';
 import { fetchTrendingNews, generateOriginalTake, convertToPost } from '../src/lib/news.js';
 import * as fs from 'fs';
 import * as path from 'path';

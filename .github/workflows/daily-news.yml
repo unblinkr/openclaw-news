@@ -1,0 +1,26 @@
+name: Daily News Update
+
+on:
+  schedule:
+    - cron: '0 14 * * *'  # 2 PM UTC daily (9 AM EST)
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  update-news:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - run: npx tsx scripts/generate-daily-post.ts
+        env:
+          NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
+      - run: npm run build
+      - run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git add -A
+          git commit -m "Add daily news $(date +%Y-%m-%d)" || exit 0
+          git push
