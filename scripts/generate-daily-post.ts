@@ -58,6 +58,12 @@ async function generateDailyPost() {
   const postsPath = path.join(process.cwd(), 'src', 'lib', 'posts.ts');
   let postsContent = fs.readFileSync(postsPath, 'utf-8');
 
+  // Guard: skip if slug already exists or if it's a fallback error post
+  if (postsContent.includes(`slug: "${post.slug}"`) || post.slug.includes('no-api-key') || post.slug.includes('api-key-configured')) {
+    console.log(`⚠️  Skipping: post with slug "${post.slug}" already exists or is an error placeholder.`);
+    return;
+  }
+
   // Create new post entry
   const newPostEntry = `{
     slug: "${post.slug}",
