@@ -15,6 +15,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Google Analytics GA4 */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-PY0C7MVC38"></script>
+        <script dangerouslySetInnerHTML={{ __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-PY0C7MVC38');
+        `}} />
+        {/* Google AdSense */}
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3225858495320520"
           crossOrigin="anonymous"></script>
       </head>
