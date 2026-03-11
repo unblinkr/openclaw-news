@@ -15,6 +15,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Google AdSense Verification */}
+        <meta name="google-adsense-account" content="ca-pub-3225858495320520" />
         {/* Google Analytics GA4 */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-PY0C7MVC38"></script>
         <script dangerouslySetInnerHTML={{ __html: `
