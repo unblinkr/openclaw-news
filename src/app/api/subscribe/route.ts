@@ -11,7 +11,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const response = await fetch('https://api.beehiiv.com/v2/subscribers', {
+    const PUBLICATION_ID = 'pub_86122107-6086-4c51-af25-09fb37ffa949';
+    const response = await fetch(`https://api.beehiiv.com/v2/publications/${PUBLICATION_ID}/subscriptions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -20,6 +21,9 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         email,
         reactivate_existing: true,
+        send_welcome_email: true,
+        utm_source: 'openclaw-news-popup',
+        utm_medium: 'organic',
       }),
     });
 

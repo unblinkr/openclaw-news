@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import EmailPopup from "@/components/EmailPopup";
 
 export const metadata: Metadata = {
   title: "OpenClaw News — The Latest on AI Agents",
@@ -30,6 +31,7 @@ export default function RootLayout({
           crossOrigin="anonymous"></script>
       </head>
       <body className="bg-[#f4f1ea] text-neutral-900 antialiased">
+        <EmailPopup />
         {children}
       </body>
     </html>
