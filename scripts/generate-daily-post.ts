@@ -1,111 +1,134 @@
 #!/usr/bin/env node
 /**
- * Daily News Generator Script
- * Run this daily to pull trending news and create a new post
- *
- * Usage:
- *   npx tsx scripts/generate-daily-post.ts
+ * Daily News Generator - Powered by Claude AI
+ * Runs daily via GitHub Actions to generate a fresh AI agent news post
+ * Requires: ANTHROPIC_API_KEY env var
  */
 
-import 'dotenv/config';
-import { fetchTrendingNews, generateOriginalTake, convertToPost } from '../src/lib/news';
 import * as fs from 'fs';
 import * as path from 'path';
 
-async function generateDailyPost() {
-  console.log('🤖 Fetching trending AI agent news...');
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '';
 
-  // Fetch top stories
-  const articles = await fetchTrendingNews();
+const TOPIC_PROMPTS = [
+  "a major AI agent platform update or product launch that happened recently",
+  "how builders and indie hackers are using AI agents to replace traditional SaaS workflows",
+  "the latest developments in autonomous AI systems and what they mean for knowledge workers",
+  "a trend in the AI agent ecosystem: tooling, infrastructure, or deployment patterns",
+  "the business model evolution of AI agent companies — how they're monetizing in 2026",
+  "how agentic AI is changing specific industries: legal, finance, ecommerce, or content",
+  "the state of AI agent reliability — what's getting better, what still breaks",
+  "new open source AI agent frameworks and what makes them worth watching",
+];
 
-  if (articles.length === 0) {
-    console.log('No news articles found today.');
-    return;
-  }
+function getTodaysTopic(): string {
+  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
+  return TOPIC_PROMPTS[dayOfYear % TOPIC_PROMPTS.length];
+}
 
-  // Pick the most relevant AI agent story (skip API key warnings)
-  const relevantArticle = articles.find(a =>
-    !a.title.includes('API Key') &&
-    (a.title.toLowerCase().includes('ai') ||
-     a.title.toLowerCase().includes('agent') ||
-     a.title.toLowerCase().includes('automation') ||
-     a.title.toLowerCase().includes('claude'))
-  ) || articles[0];
-
-  if (!relevantArticle) {
-    console.log('No relevant AI articles found today.');
-    return;
-  }
-
-  console.log(`\n📰 Selected: ${relevantArticle.title}`);
-  console.log(`   Source: ${relevantArticle.source}`);
-
-  // Generate original take
-  console.log('\n✍️  Generating original analysis...');
-  const take = generateOriginalTake(relevantArticle);
-
-  // Create slug from title
-  const slug = take.title
+function slugify(title: string): string {
+  return title
     .toLowerCase()
     .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')
-    .substring(0, 50);
+    .replace(/-+/g, '-')
+    .substring(0, 55)
+    .replace(/-$/, '');
+}
 
-  // Convert to post
-  const post = convertToPost(take, relevantArticle, slug);
+async function generateArticleWithClaude(topic: string) {
+  if (!ANTHROPIC_API_KEY) {
+    console.error('ANTHROPIC_API_KEY not set');
+    return null;
+  }
 
-  // Read existing posts file
+  const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+  const prompt = `You are the lead writer for OpenClaw News — the authoritative publication covering AI agents, autonomous systems, and the builder economy. Today is ${today}.
+
+Write a sharp, original news analysis article about: ${topic}
+
+The article should be 400-500 words of real analysis, have a punchy headline, cover what's happening and why it matters for builders. Sound like a sharp tech journalist who builds things themselves. Never name specific private individuals.
+
+Return ONLY a JSON object, no markdown, no backticks:
+{"title":"headline","excerpt":"1-2 sentence summary max 160 chars","tag":"News or Analysis or Deep Dive or Opinion","readTime":"X min read","content":"full article in markdown with ## section headers"}`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({
+      model: 'claude-opus-4-5',
+      max_tokens: 2000,
+      messages: [{ role: 'user', content: prompt }],
+    }),
+  });
+
+  if (!res.ok) {
+    console.error(`Anthropic API error: ${res.status}`);
+    return null;
+  }
+
+  const data = await res.json();
+  const text = data.content?.[0]?.text || '';
+  try {
+    return JSON.parse(text.replace(/```json|```/g, '').trim());
+  } catch (e) {
+    console.error('Failed to parse response:', e);
+    return null;
+  }
+}
+
+async function generateDailyPost() {
+  console.log('OpenClaw News Daily Generator starting...');
+
+  const topic = getTodaysTopic();
+  console.log(`Topic: ${topic}`);
+
+  const article = await generateArticleWithClaude(topic);
+  if (!article) { process.exit(1); }
+
+  const slug = slugify(article.title);
+  const date = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+  console.log(`Generated: "${article.title}" -> ${slug}`);
+
   const postsPath = path.join(process.cwd(), 'src', 'lib', 'posts.ts');
-  let postsContent = fs.readFileSync(postsPath, 'utf-8');
+  const postsContent = fs.readFileSync(postsPath, 'utf-8');
 
-  // Guard: skip if slug already exists or if it's a fallback error post
-  if (postsContent.includes(`slug: "${post.slug}"`) || post.slug.includes('no-api-key') || post.slug.includes('api-key-configured')) {
-    console.log(`⚠️  Skipping: post with slug "${post.slug}" already exists or is an error placeholder.`);
+  if (postsContent.includes(`slug: "${slug}"`)) {
+    console.log(`Slug "${slug}" already exists — skipping.`);
     return;
   }
 
-  // Create new post entry
+  const safeContent = article.content.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${');
+  const safeTitle = article.title.replace(/"/g, '\\"');
+  const safeExcerpt = article.excerpt.replace(/"/g, '\\"').substring(0, 160);
+
   const newPostEntry = `{
-    slug: "${post.slug}",
-    title: "${post.title.replace(/"/g, '\\"')}",
-    excerpt: "${post.excerpt.replace(/"/g, '\\"').substring(0, 150)}",
+    slug: "${slug}",
+    title: "${safeTitle}",
+    excerpt: "${safeExcerpt}",
     content: \`
-${post.content}
+${safeContent}
 \`,
-    date: "${post.date}",
-    tag: "News",
-    readTime: "4 min read",
+    date: "${date}",
+    tag: "${article.tag}",
+    readTime: "${article.readTime}",
   },`;
 
-  // Insert after the opening bracket of posts array
   const arrayStart = postsContent.indexOf('export const posts: Post[] = [');
-  if (arrayStart === -1) {
-    console.error('Could not find posts array in posts.ts');
-    return;
-  }
-
   const insertPosition = postsContent.indexOf('{', arrayStart);
-  const updatedContent =
-    postsContent.slice(0, insertPosition) +
-    newPostEntry + '\n  ' +
-    postsContent.slice(insertPosition);
+  const updatedContent = postsContent.slice(0, insertPosition) + newPostEntry + '\n  ' + postsContent.slice(insertPosition);
 
-  // Write updated file
   fs.writeFileSync(postsPath, updatedContent);
-
-  console.log(`\n✅ New post created: ${post.slug}`);
-  console.log(`   Title: ${post.title}`);
-  console.log(`   Date: ${post.date}`);
-  console.log(`\n📌 Next steps:`);
-  console.log(`   1. Review the generated post in src/lib/posts.ts`);
-  console.log(`   2. Edit the content to add your specific insights`);
-  console.log(`   3. Run 'npm run build' to rebuild the site`);
-  console.log(`   4. 'git add -A && git commit -m "Add daily news" && git push'`);
+  console.log(`Done. Post "${article.title}" added for ${date}`);
 }
 
-// Run if called directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  generateDailyPost().catch(console.error);
-}
-
-export { generateDailyPost };
+generateDailyPost().catch(err => {
+  console.error('Fatal:', err);
+  process.exit(1);
+});

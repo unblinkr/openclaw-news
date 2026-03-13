@@ -10,17 +10,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+
       - run: npm ci
-      - run: npx tsx scripts/generate-daily-post.ts
+
+      - name: Generate daily post with Claude AI
+        run: npx tsx scripts/generate-daily-post.ts
         env:
-          NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
-      - run: npm run build
-      - run: |
-          git config user.name "GitHub Action"
-          git config user.email "action@github.com"
-          git add -A
-          git commit -m "Add daily news $(date +%Y-%m-%d)" || exit 0
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Commit and push new post
+        run: |
+          git config user.name "OpenClaw Bot"
+          git config user.email "bot@openclaw.news"
+          git add src/lib/posts.ts
+          git diff --staged --quiet || git commit -m "Daily post: $(date +%Y-%m-%d)"
           git push
