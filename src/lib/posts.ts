@@ -11,6 +11,57 @@ export interface Post {
 
 export const posts: Post[] = [
   {
+    slug: "the-great-unbundling-how-builders-are-replacing-500mont",
+    title: "The Great Unbundling: How Builders Are Replacing $500/Month SaaS Stacks With $20 in API Calls",
+    excerpt: "Indie hackers are ditching bloated SaaS tools for custom AI agent workflows. The implications for the software industry are massive.",
+    content: `
+## The Stack Is Dead
+
+Something fundamental shifted in the past six months. Builders stopped asking "which SaaS tool should I use?" and started asking "can an agent just do this?"
+
+The answer, increasingly, is yes.
+
+Across indie hacker communities, Discord servers, and builder forums, a pattern has emerged: solo founders and small teams are systematically replacing their SaaS subscriptions with lightweight AI agent workflows. CRM, email marketing, customer support, data analysis, content scheduling — all falling to custom-built agent systems that cost a fraction of traditional tooling.
+
+## The Math That Changed Everything
+
+Consider a typical indie hacker's monthly stack from 2024: CRM ($50), email automation ($80), helpdesk ($60), analytics dashboards ($40), social scheduling ($30), invoicing ($25). That's nearly $300/month before writing a single line of product code.
+
+Now consider the 2026 alternative: a handful of agents running on Claude or GPT-4o, orchestrated through simple Python scripts or no-code platforms, pulling from the same APIs these SaaS tools use underneath. Total cost: $15-40/month in API calls, depending on volume.
+
+The capability gap has closed. The price gap has not.
+
+## What Builders Are Actually Doing
+
+The patterns showing up in production are remarkably consistent:
+
+**Customer support agents** that handle 70-80% of inbound queries by connecting to knowledge bases and escalating only genuine edge cases. One bootstrapped founder reported cutting their Intercom spend entirely after a weekend build.
+
+**Sales pipeline agents** that enrich leads, draft personalized outreach, and update CRM data automatically. The "CRM" is now often just a Notion database or Airtable base with an agent layer on top.
+
+**Content engines** that monitor competitors, draft newsletters, and schedule social posts based on engagement patterns. Not the slop factories of 2024 — these are supervised workflows where the agent handles grunt work while humans maintain voice and strategy.
+
+## Why This Matters Beyond Cost Savings
+
+The real shift isn't about saving $200/month. It's about ownership and flexibility.
+
+Traditional SaaS tools are opinionated. They encode workflows that may not match how you actually work. When builders create their own agent systems, they're building tools that bend to their process rather than the reverse.
+
+They also own the data flows completely. No more exporting CSVs between tools that refuse to integrate properly. No more vendor lock-in anxiety.
+
+## The Uncomfortable Implication
+
+If a solo developer can replace a $50/month SaaS tool with a weekend project and $3/month in API costs, what happens to the companies selling those tools?
+
+The SaaS middle market — tools that are essentially thin wrappers around standard workflows — faces an existential question. The answer will reshape the software industry over the next two years.
+
+For builders, though, the message is clear: the leverage has never been higher. Your agent is your SaaS now.
+`,
+    date: "March 14, 2026",
+    tag: "Analysis",
+    readTime: "4 min read",
+  },
+  {
     slug: "i-started-a-business-with-ai-and-no-tech-background",
     title: "What AI Can't Replace: A Non-Technical Founder's Honest Take",
     excerpt: "Tim Desoto launched Goodlife, an AI shopping startup, with zero coding experience. Here's his real talk on where AI shines—and where it falls flat.",
