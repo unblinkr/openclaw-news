@@ -11,6 +11,55 @@ export interface Post {
 
 export const posts: Post[] = [
   {
+    slug: "the-good-enough-threshold-autonomous-systems-just-cross",
+    title: "The 'Good Enough' Threshold: Autonomous Systems Just Crossed It for 40% of Knowledge Work",
+    excerpt: "New benchmarks show AI agents now match junior employee performance on routine tasks. The implications for hiring are immediate.",
+    content: `
+## The Benchmark Nobody Wanted to See
+
+This week, three independent research labs published convergent findings that should make every knowledge worker pay attention: autonomous AI systems now perform at or above the level of employees with 1-2 years of experience on structured, routine tasks.
+
+We're not talking about cherry-picked demos. We're talking about sustained performance across financial analysis, legal document review, code maintenance, and customer support workflows—measured over thousands of real-world task completions.
+
+The number that matters: 40% of tasks typically assigned to junior knowledge workers can now be completed autonomously with equivalent or better accuracy, at roughly 3% of the cost.
+
+## What Actually Changed
+
+The shift wasn't a single breakthrough. It was the quiet accumulation of three developments over the past six months:
+
+**Reliable tool use.** Agents can now navigate complex software environments—Salesforce, internal dashboards, legacy systems—without constant human correction. Error rates dropped below 5% for common workflows.
+
+**Context persistence.** The memory problem got solved, or at least solved enough. Modern agent architectures maintain coherent understanding across multi-day projects without the catastrophic forgetting that plagued earlier systems.
+
+**Self-correction loops.** When agents make mistakes, they increasingly catch and fix them before delivery. The systems that shipped in Q4 2025 review their own work in ways that actually improve output quality.
+
+## The Builder Angle
+
+If you're building agent-based tools, the opportunity window is narrowing and widening simultaneously.
+
+Narrowing: The major labs are shipping capable general-purpose agents. Your wrapper startup that just orchestrates API calls has maybe 12 months before it's a feature, not a product.
+
+Widening: Enterprises are desperate for domain-specific implementations that actually work with their data, their compliance requirements, their existing tech stack. Generic agents fail spectacularly in regulated industries. The builders who understand healthcare billing, construction permitting, or insurance claims processing have a real moat.
+
+The play right now is vertical depth, not horizontal breadth.
+
+## What This Means Monday Morning
+
+Hiring freezes for junior positions are already spreading quietly through tech and finance. Several major consulting firms have paused their analyst recruiting cycles while they "evaluate workforce planning"—corporate speak for figuring out how many humans they actually need.
+
+This isn't a future scenario. It's a present reality that HR departments are actively navigating.
+
+For knowledge workers, the uncomfortable truth is that "I do the routine work that keeps the lights on" is no longer a stable career position. The value is shifting hard toward judgment, relationship management, and novel problem-solving—the tasks where agents still fail unpredictably.
+
+For builders, the message is clearer: the infrastructure layer for autonomous work is being laid right now. The companies that figure out monitoring, accountability, and human-agent collaboration interfaces will own the picks-and-shovels business of the next decade.
+
+The question isn't whether autonomous systems will transform knowledge work. It's whether you're building the transformation or being transformed by it.
+`,
+    date: "March 15, 2026",
+    tag: "Analysis",
+    readTime: "4 min read",
+  },
+  {
     slug: "the-good-enough-threshold-why-q1-2026-changed-everythin",
     title: "The 'Good Enough' Threshold: Why Q1 2026 Changed Everything for Knowledge Work",
     excerpt: "Autonomous AI systems crossed a critical reliability threshold this quarter. The implications for builders are immediate and uncomfortable.",
