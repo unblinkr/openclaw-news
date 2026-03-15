@@ -37,7 +37,7 @@ jobs:
           git commit -m "Daily post: $(date +%Y-%m-%d)"
           git push origin main
 
-      - name: Post to X (Twitter)
+      - name: Post to X + LinkedIn
         run: npx tsx scripts/auto-post-to-buffer.ts
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -45,4 +45,5 @@ jobs:
           X_API_SECRET:      ${{ secrets.X_API_SECRET }}
           X_ACCESS_TOKEN:    ${{ secrets.X_ACCESS_TOKEN }}
           X_ACCESS_SECRET:   ${{ secrets.X_ACCESS_SECRET }}
+          LINKEDIN_TOKEN:    ${{ secrets.LINKEDIN_TOKEN }}
         continue-on-error: true
