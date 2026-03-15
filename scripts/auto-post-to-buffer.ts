@@ -1,53 +1,57 @@
 #!/usr/bin/env node
 /**
- * Auto-poster: reads the latest article and posts to Buffer
- * Uses Buffer API v1 with correct auth header format
+ * Auto-poster: posts latest article to X (Twitter) daily
+ * Uses twitter-api-v2 with OAuth 1.0a user auth
  */
 
 import * as fs from 'fs';
 import * as path from 'path';
+import { TwitterApi } from 'twitter-api-v2';
 
-const BUFFER_TOKEN = process.env.BUFFER_TOKEN || '';
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '';
+const X_API_KEY         = process.env.X_API_KEY || '';
+const X_API_SECRET      = process.env.X_API_SECRET || '';
+const X_ACCESS_TOKEN    = process.env.X_ACCESS_TOKEN || '';
+const X_ACCESS_SECRET   = process.env.X_ACCESS_SECRET || '';
+
 const SITE_URL = 'https://openclaw-news.vercel.app';
 
 function getLatestPost() {
   const postsPath = path.join(process.cwd(), 'src', 'lib', 'posts.ts');
   const content = fs.readFileSync(postsPath, 'utf-8');
-
-  // Find first real post entry (skip interface definition)
   const arrayStart = content.indexOf('export const posts: Post[] = [');
   const postSection = content.slice(arrayStart);
 
-  const slugMatch = postSection.match(/slug: "([^"]+)"/);
-  const titleMatch = postSection.match(/title: "([^"]+)"/);
+  const slugMatch    = postSection.match(/slug: "([^"]+)"/);
+  const titleMatch   = postSection.match(/title: "([^"]+)"/);
   const excerptMatch = postSection.match(/excerpt: "([^"]+)"/);
-  const tagMatch = postSection.match(/tag: "([^"]+)"/);
 
   if (!slugMatch) return null;
-
   return {
-    slug: slugMatch[1],
-    title: titleMatch?.[1] || '',
+    slug:    slugMatch[1],
+    title:   titleMatch?.[1]  || '',
     excerpt: excerptMatch?.[1] || '',
-    tag: tagMatch?.[1] || 'News',
   };
 }
 
-async function generateSocialCopy(post: { slug: string; title: string; excerpt: string; tag: string }) {
+async function generateTweet(post: { slug: string; title: string; excerpt: string }): Promise<string> {
   const url = `${SITE_URL}/posts/${post.slug}`;
 
-  const prompt = `You are the social media editor of OpenClaw News — sharp, credible, builder-focused. Never name specific private individuals.
+  const prompt = `You are the social media editor of OpenClaw News — sharp, builder-focused. Never name specific private individuals.
 
 Article: "${post.title}"
 Summary: ${post.excerpt}
 URL: ${url}
 
-Return ONLY raw JSON, no markdown, no backticks:
-{
-  "twitter": "Single tweet. HARD MAX 220 chars including the URL. Punchy. 1-2 emojis. URL at end.",
-  "linkedin": "LinkedIn post for founders/builders. 120-150 words. Bold first line. 3 short paragraphs. End with a question then URL on its own line."
-}`;
+Write a single tweet. Rules:
+- HARD MAX 255 characters total (including URL)
+- Punchy opening line
+- 1-2 relevant emojis
+- URL must be at the very end
+- No hashtags
+- Count characters carefully
+
+Return ONLY the tweet text, nothing else.`;
 
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -58,126 +62,68 @@ Return ONLY raw JSON, no markdown, no backticks:
     },
     body: JSON.stringify({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 600,
+      max_tokens: 200,
       messages: [{ role: 'user', content: prompt }],
     }),
   });
 
   const data = await res.json();
-  const text = data.content?.[0]?.text || '{}';
-  try {
-    return JSON.parse(text.replace(/```json|```/g, '').trim());
-  } catch {
-    return {
-      twitter: `${post.title} ${url}`.substring(0, 220),
-      linkedin: `${post.title}\n\n${post.excerpt}\n\n${url}`,
-    };
+  const tweet = data.content?.[0]?.text?.trim() || '';
+
+  // Hard truncate if still over 280
+  if (tweet.length > 280) {
+    const truncated = tweet.substring(0, 280 - url.length - 4) + '... ' + url;
+    return truncated;
   }
-}
-
-async function bufferRequest(endpoint: string, method = 'GET', body?: URLSearchParams) {
-  const baseUrl = 'https://api.bufferapp.com/1';
-  const url = method === 'GET'
-    ? `${baseUrl}/${endpoint}?access_token=${BUFFER_TOKEN}`
-    : `${baseUrl}/${endpoint}.json`;
-
-  const options: RequestInit = {
-    method,
-    headers: {
-      'Authorization': `Bearer ${BUFFER_TOKEN}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-  };
-
-  if (method === 'POST' && body) {
-    body.append('access_token', BUFFER_TOKEN);
-    options.body = body;
-  }
-
-  const res = await fetch(url, options);
-  const text = await res.text();
-
-  try {
-    return { ok: res.ok, status: res.status, data: JSON.parse(text) };
-  } catch {
-    return { ok: res.ok, status: res.status, data: text };
-  }
-}
-
-async function getProfiles() {
-  // Try both Bearer header and query param approaches
-  console.log('Trying Bearer token auth...');
-  let result = await bufferRequest('profiles.json');
-
-  if (!result.ok || !Array.isArray(result.data)) {
-    console.log(`Bearer failed (${result.status}), trying query param...`);
-    const res = await fetch(`https://api.bufferapp.com/1/profiles.json?access_token=${BUFFER_TOKEN}`);
-    const text = await res.text();
-    console.log(`Query param response (${res.status}):`, text.substring(0, 200));
-    try {
-      const data = JSON.parse(text);
-      if (Array.isArray(data)) return data;
-      console.error('Profiles response:', JSON.stringify(data));
-      return [];
-    } catch {
-      console.error('Non-JSON response:', text.substring(0, 300));
-      return [];
-    }
-  }
-
-  return Array.isArray(result.data) ? result.data : [];
+  return tweet;
 }
 
 async function main() {
-  if (!BUFFER_TOKEN) { console.error('❌ BUFFER_TOKEN not set'); process.exit(1); }
-  if (!ANTHROPIC_API_KEY) { console.error('❌ ANTHROPIC_API_KEY not set'); process.exit(1); }
-
   console.log('📣 Auto-poster starting...');
-  console.log(`🔑 Token prefix: ${BUFFER_TOKEN.substring(0, 8)}...`);
+
+  // Validate env vars
+  const missing = [
+    !ANTHROPIC_API_KEY && 'ANTHROPIC_API_KEY',
+    !X_API_KEY         && 'X_API_KEY',
+    !X_API_SECRET      && 'X_API_SECRET',
+    !X_ACCESS_TOKEN    && 'X_ACCESS_TOKEN',
+    !X_ACCESS_SECRET   && 'X_ACCESS_SECRET',
+  ].filter(Boolean);
+
+  if (missing.length > 0) {
+    console.error(`❌ Missing env vars: ${missing.join(', ')}`);
+    process.exit(1);
+  }
 
   const post = getLatestPost();
   if (!post) { console.error('❌ Could not read latest post'); process.exit(1); }
   console.log(`📰 Latest post: "${post.title}"`);
 
-  console.log('✍️  Generating social copy...');
-  const copy = await generateSocialCopy(post);
-  console.log(`Twitter (${copy.twitter.length} chars): ${copy.twitter}`);
-  console.log(`LinkedIn: ${copy.linkedin.substring(0, 100)}...`);
+  console.log('✍️  Generating tweet...');
+  const tweet = await generateTweet(post);
+  console.log(`\nTweet (${tweet.length} chars):\n${tweet}\n`);
 
-  console.log('\n📡 Fetching Buffer profiles...');
-  const profiles = await getProfiles();
-
-  if (profiles.length === 0) {
-    console.error('❌ No Buffer profiles found — check token at buffer.com/app/account/apps');
+  if (tweet.length > 280) {
+    console.error(`❌ Tweet too long: ${tweet.length} chars`);
     process.exit(1);
   }
 
-  console.log(`✅ Found ${profiles.length} profiles:`);
-  profiles.forEach((p: any) => console.log(`  - ${p.service}: ${p.service_username || p.formatted_username}`));
+  console.log('🐦 Posting to X...');
+  const client = new TwitterApi({
+    appKey:            X_API_KEY,
+    appSecret:         X_API_SECRET,
+    accessToken:       X_ACCESS_TOKEN,
+    accessSecret:      X_ACCESS_SECRET,
+  });
 
-  let posted = 0;
-  for (const profile of profiles) {
-    const service = (profile.service || '').toLowerCase();
-    const text = (service.includes('twitter') || service.includes('x'))
-      ? copy.twitter
-      : copy.linkedin;
-
-    const body = new URLSearchParams();
-    body.append('text', text);
-    body.append('profile_ids[]', profile.id);
-
-    const result = await bufferRequest('updates/create.json', 'POST', body);
-
-    if (result.ok && (result.data?.success || result.data?.id)) {
-      console.log(`✅ Queued to ${service} (${profile.service_username})`);
-      posted++;
-    } else {
-      console.error(`❌ Failed ${service}: ${JSON.stringify(result.data).substring(0, 200)}`);
-    }
+  try {
+    const result = await client.v2.tweet(tweet);
+    console.log(`✅ Posted to X! Tweet ID: ${result.data.id}`);
+    console.log(`   https://x.com/i/web/status/${result.data.id}`);
+  } catch (err: any) {
+    console.error('❌ X post failed:', err?.data || err?.message || err);
+    process.exit(1);
   }
-
-  console.log(`\n🎉 Done. Queued to ${posted}/${profiles.length} profiles.`);
-  if (posted === 0) process.exit(1);
 }
 
 main().catch(err => {

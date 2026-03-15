@@ -37,9 +37,12 @@ jobs:
           git commit -m "Daily post: $(date +%Y-%m-%d)"
           git push origin main
 
-      - name: Post to social via Buffer
+      - name: Post to X (Twitter)
         run: npx tsx scripts/auto-post-to-buffer.ts
         env:
-          BUFFER_TOKEN: ${{ secrets.BUFFER_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        continue-on-error: true  # Don't fail the whole run if Buffer has issues
+          X_API_KEY:         ${{ secrets.X_API_KEY }}
+          X_API_SECRET:      ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN:    ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_SECRET:   ${{ secrets.X_ACCESS_SECRET }}
+        continue-on-error: true
