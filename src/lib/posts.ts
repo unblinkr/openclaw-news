@@ -11,6 +11,49 @@ export interface Post {
 
 export const posts: Post[] = [
   {
+    slug: "the-autonomous-enough-threshold-why-march-2026-marks-th",
+    title: "The 'Autonomous Enough' Threshold: Why March 2026 Marks the Real Inflection Point",
+    excerpt: "AI agents crossed from demo to deployment this quarter. Here's what actually changed and why builders need to pay attention.",
+    content: `
+Something shifted in the past six weeks. Not the breathless "AGI is here" shift that Twitter loves to proclaim every quarter, but something more concrete: autonomous AI systems started reliably completing multi-hour knowledge work without human checkpoints.
+
+## What Actually Happened
+
+The major model providers quietly rolled out what engineers are calling "persistent context agents" — systems that maintain coherent task execution across sessions, handle ambiguity without constant clarification, and most importantly, know when to stop and flag genuine blockers versus when to push through uncertainty.
+
+This isn't about benchmark improvements. It's about a practical threshold being crossed. The error rate on complex research, analysis, and synthesis tasks dropped below what most organizations consider acceptable for junior employees. We're talking 4-6 hour autonomous workflows: competitive analysis, code refactoring across repositories, contract review with redlines, financial model construction from unstructured data.
+
+## Why This Moment Is Different
+
+Previous "agent" releases were essentially fancy autocomplete with API access. The new generation exhibits what one infrastructure team described as "boring competence" — they handle edge cases, recover from failures, and produce work that doesn't require extensive human revision.
+
+The technical shift combines larger effective context windows, improved instruction-following from RLHF advances, and better tool-use architectures. But the real unlock was training these systems on task completion rather than just task initiation.
+
+## What This Means for Builders
+
+If you're building tools for knowledge workers, your competitive landscape just changed. The "AI assistant" framing is dead. Users don't want a helper; they want outcomes.
+
+Three implications worth considering:
+
+**Workflow integration becomes everything.** Agents that can plug into existing systems — Notion, Linear, Salesforce, internal tools — will crush standalone chat interfaces. The builders winning right now are shipping MCP connectors and OAuth flows, not prompt improvements.
+
+**Quality verification is the new moat.** Anyone can spin up an agent. The hard problem is knowing when the output is actually correct. Companies building robust evaluation frameworks and human-in-the-loop review systems are positioning themselves as the trust layer.
+
+**Pricing models need rethinking.** Per-seat SaaS pricing breaks down when one seat can now do the work of five. Usage-based and outcome-based models are coming whether vendors like it or not.
+
+## The Builder Opportunity
+
+The knowledge worker displacement narrative misses the point. Yes, certain roles will compress. But the immediate opportunity is the massive gap between what these systems can theoretically do and what non-technical organizations can actually deploy.
+
+The builders who figure out packaging, compliance, and integration for specific verticals — legal, finance, healthcare — will capture enormous value in the next eighteen months. The technology is ready. The implementation layer is wide open.
+
+The question isn't whether autonomous AI works anymore. It's who builds the on-ramp.
+`,
+    date: "March 15, 2026",
+    tag: "Analysis",
+    readTime: "4 min read",
+  },
+  {
     slug: "the-copilot-to-autopilot-shift-is-hereand-most-teams-ar",
     title: "The 'Copilot-to-Autopilot' Shift Is Here—And Most Teams Aren't Ready",
     excerpt: "Autonomous AI systems are graduating from suggestion engines to execution engines. The implications for knowledge workers are profound.",
