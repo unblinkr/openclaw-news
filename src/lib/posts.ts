@@ -11,6 +11,53 @@ export interface Post {
 
 export const posts: Post[] = [
   {
+    slug: "the-good-enough-threshold-why-q1-2026-changed-everythin",
+    title: "The 'Good Enough' Threshold: Why Q1 2026 Changed Everything for Knowledge Work",
+    excerpt: "Autonomous AI systems crossed a critical reliability threshold this quarter. The implications for builders are immediate and uncomfortable.",
+    content: `
+## The Quiet Revolution in Q1
+
+Something shifted in the first quarter of 2026, and most knowledge workers haven't caught up yet. Autonomous AI systems—agents that can plan, execute, and iterate without human intervention—crossed what researchers are calling the 'good enough' threshold for routine cognitive tasks.
+
+The numbers tell the story. Error rates on complex, multi-step research tasks dropped below 3% for leading systems. That's not perfect, but it's better than the industry average for outsourced knowledge work. More importantly, these systems now reliably know when they don't know—they escalate appropriately instead of hallucinating through problems.
+
+## What Actually Changed
+
+Three technical developments converged this quarter:
+
+**Persistent memory architectures** finally matured. Agents can now maintain context across sessions spanning weeks, not just conversation windows. This sounds incremental, but it's transformative—it means an agent can actually own a project rather than being briefed from scratch every interaction.
+
+**Tool use became compositional.** Current systems chain together dozens of external tools—databases, APIs, code environments—without brittle handoffs. They debug their own integration failures. This is the difference between a demo and a deployment.
+
+**Verification loops got cheap.** The breakthrough wasn't making agents smarter; it was making self-checking computationally tractable. Systems now routinely validate their own outputs against multiple sources before presenting results.
+
+## Why Builders Should Pay Attention Now
+
+Here's the uncomfortable truth: if your business model depends on humans performing routine synthesis—compiling research, drafting standard documents, monitoring dashboards and summarizing anomalies—you're now competing with systems that work 24/7 at marginal costs approaching zero.
+
+The builders winning right now aren't fighting this. They're identifying the seams: the places where human judgment genuinely matters and the places where it's just expensive habit.
+
+We're seeing three patterns emerge among teams adapting fastest:
+
+1. **Aggressive delegation with tight feedback loops.** Ship agent-generated work to real users, measure failures, iterate. Perfection isn't the goal—competitive advantage is.
+
+2. **Hybrid architectures by default.** The smartest systems keep humans in the loop for high-stakes decisions while letting agents handle everything upstream and downstream.
+
+3. **Productizing expertise at the edges.** If you have genuine domain knowledge, the leverage has never been higher. Agents amplify expertise; they don't replace it—yet.
+
+## The Uncomfortable Question
+
+The transition won't be evenly distributed. Organizations with strong data infrastructure and clear processes will capture most of the gains. Everyone else will face a choice: adapt quickly or watch margins compress.
+
+For individual builders, the calculus is simpler. The question isn't whether to use these systems—it's whether you're learning to direct them faster than they're learning to replace what you do.
+
+Q2 2026 is going to be interesting.
+`,
+    date: "March 15, 2026",
+    tag: "Analysis",
+    readTime: "4 min read",
+  },
+  {
     slug: "the-great-unbundling-how-builders-are-replacing-500mont",
     title: "The Great Unbundling: How Builders Are Replacing $500/Month SaaS Stacks With $20 in API Calls",
     excerpt: "Indie hackers are ditching bloated SaaS tools for custom AI agent workflows. The implications for the software industry are massive.",
