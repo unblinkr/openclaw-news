@@ -3,7 +3,7 @@ name: Daily News Update
 on:
   schedule:
     - cron: '0 14 * * *'  # 2 PM UTC daily (9 AM EST)
-  workflow_dispatch:  # Manual trigger
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -33,6 +33,13 @@ jobs:
           git config user.name "OpenClaw Bot"
           git config user.email "bot@openclaw.news"
           git add src/lib/posts.ts
-          git diff --staged --quiet && echo "No changes to commit" && exit 0
+          git diff --staged --quiet && echo "No new post today" && exit 0
           git commit -m "Daily post: $(date +%Y-%m-%d)"
           git push origin main
+
+      - name: Post to social via Buffer
+        run: npx tsx scripts/auto-post-to-buffer.ts
+        env:
+          BUFFER_TOKEN: ${{ secrets.BUFFER_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        continue-on-error: true  # Don't fail the whole run if Buffer has issues
