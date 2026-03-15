@@ -11,6 +11,49 @@ export interface Post {
 
 export const posts: Post[] = [
   {
+    slug: "the-copilot-to-autopilot-shift-is-hereand-most-teams-ar",
+    title: "The 'Copilot-to-Autopilot' Shift Is Here—And Most Teams Aren't Ready",
+    excerpt: "Autonomous AI systems are graduating from suggestion engines to execution engines. The implications for knowledge workers are profound.",
+    content: `
+## The Quiet Revolution
+
+Something fundamental shifted in the past 90 days. The major AI labs stopped talking about "assistance" and started shipping "autonomy." Anthropic's agent framework updates, OpenAI's Operator improvements, and Google's Project Mariner rollout all point to the same trajectory: AI systems that don't wait for your approval on every keystroke.
+
+For builders, this isn't hype. It's happening in production environments right now.
+
+## What's Actually Changing
+
+The technical leap isn't raw intelligence—it's reliable execution over extended tasks. Current autonomous systems can maintain context across multi-hour workflows, recover from errors without human intervention, and coordinate with other agents through increasingly standardized protocols.
+
+One infrastructure startup reported this week that their four-person engineering team now runs eleven persistent agents handling everything from dependency updates to customer ticket triage. They're not replacing engineers. They're replacing the cognitive overhead that made scaling impossible.
+
+The key advancement: these systems now fail gracefully. Earlier agent architectures would cascade errors catastrophically. The current generation pauses, documents the failure state, and either routes to humans or attempts alternative approaches. That sounds incremental. It's not. It's the difference between a prototype and a production system.
+
+## Why Knowledge Workers Should Pay Attention
+
+The uncomfortable truth is that "knowledge work" was always a vague category. Much of it involves pattern matching, information synthesis, and routine decision-making—exactly what autonomous systems now handle competently.
+
+But here's what the doomsayers miss: the builders who've integrated these systems aren't doing less. They're doing different. The teams gaining advantage are the ones treating agents as junior colleagues who need onboarding, clear scope definition, and oversight structures.
+
+The emerging playbook looks like this: humans handle ambiguity, stakeholder navigation, and novel problem framing. Agents handle execution, monitoring, and the tedious middle layers that used to consume 60% of a senior IC's week.
+
+## What Builders Should Do Now
+
+First, audit your workflows for "autopilot-ready" segments. These are tasks with clear success criteria, recoverable failure modes, and low ambiguity. Start there.
+
+Second, invest in observability. Autonomous systems require different monitoring than traditional software. You need to understand not just what they did, but why they made specific decisions.
+
+Third, stop waiting for perfect. The teams pulling ahead aren't using flawless systems—they're building organizational muscle for human-agent collaboration while others debate whether to start.
+
+## The Bottom Line
+
+The copilot era lasted roughly three years. The autopilot era is beginning now. The question isn't whether autonomous AI systems will transform knowledge work—it's whether you'll be architecting that transformation or reacting to it.
+`,
+    date: "March 15, 2026",
+    tag: "Analysis",
+    readTime: "4 min read",
+  },
+  {
     slug: "the-good-enough-threshold-autonomous-systems-just-cross",
     title: "The 'Good Enough' Threshold: Autonomous Systems Just Crossed It for 40% of Knowledge Work",
     excerpt: "New benchmarks show AI agents now match junior employee performance on routine tasks. The implications for hiring are immediate.",
